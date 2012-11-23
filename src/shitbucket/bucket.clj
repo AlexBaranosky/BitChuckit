@@ -21,14 +21,11 @@
     (binding [*out* out]
       (doseq [line (line-seq in)]
         (when (pred line)
-          (println line))))))
+          (println line))))))) 
 
 (defmacro doseq-indexed [index-sym [item-sym coll] & body]
-  `(let [idx-atom# (atom 0)]
-     (doseq [~item-sym ~coll]
-       (let [~index-sym (deref idx-atom#)]
-         ~@body
-         (swap! idx-atom# inc)))))
+  `(doseq [[~item-sym ~index-sym] (map vector ~coll (range))]
+     ~@body)))
 
 (defn -main [& args]
   (println "ShitBucket at your service.")
