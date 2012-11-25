@@ -33,12 +33,9 @@
 
   (let [bucket-lines (load-bucket-from-storage)
         lines (grab-3 bucket-lines)
-        idx->line {1 (first lines)
-                   2 (second lines)
-                   3 (nth lines 2)}]
+        idx->line (zipmap [1 2 3] lines)]
     (doseq-indexed idx [line lines]
                    (println (str "    " (inc idx) ". ") line))
-
     (println)
     (println "Enter the number of any you want to delete then press ENTER.")
     (let [input (read-line)]
