@@ -32,21 +32,21 @@
   (println "Your Sampling:")
 
   (let [bucket-lines (load-bucket-from-storage)
-        items (grab-3 bucket-lines)
-        idx->item {1 (first items)
-                   2 (second items)
-                   3 (nth items 2)}]
-    (doseq-indexed idx [item items]
-                   (println (str "    " (inc idx) ". ") item))
+        lines (grab-3 bucket-lines)
+        idx->line {1 (first lines)
+                   2 (second lines)
+                   3 (nth lines 2)}]
+    (doseq-indexed idx [line lines]
+                   (println (str "    " (inc idx) ". ") line))
 
     (println)
     (println "Enter the number of any you want to delete then press ENTER.")
-    (let [to-delete (read-line)]
-      (when-not (str/blank? to-delete)
-        (let [to-delete-numbers  (read-string (str "[" to-delete "]"))
-              to-delete-set (set (keep idx->item to-delete-numbers))
+    (let [input (read-line)]
+      (when-not (str/blank? input)
+        (let [line-indices-to-delete (read-string (str "[" input "]"))
+              line-set (set (keep idx->line line-indices-to-delete))
               temp-filename (str "/tmp/" (gensym "bitchuckit-"))]
-          (filter-line-seq (complement to-delete-set) bucket-filename temp-filename)
+          (filter-line-seq (complement line-set) bucket-filename temp-filename)
           (spit bucket-filename (slurp temp-filename))
           (io/delete-file temp-filename))))
     (println "Later dude!")))
