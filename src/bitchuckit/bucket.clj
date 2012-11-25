@@ -4,13 +4,12 @@
   (:gen-class))
 
 (def ^:private bucket-filename "/Users/abaranosky/Desktop/BitChuckit.txt")
-(def ^:private bitchuckit (atom []))
 
 (defn- load-bucket-from-storage []
-  (reset! bitchuckit (vec (str/split-lines (slurp bucket-filename)))))
+  (str/split-lines (slurp bucket-filename)))
 
-(defn- grab-3 []
-  (take 3 (shuffle @bitchuckit)))
+(defn- grab-3 [items]
+  (take 3 (shuffle items)))
 
 (defn- filter-line-seq
   "Filter one file into another file one line at a time.
@@ -29,11 +28,11 @@
 
 (defn -main [& args]
   (println "Bitchuckit at your service.")
-  (load-bucket-from-storage)
-
   (println)
   (println "Your Sampling:")
-  (let [items (grab-3)
+
+  (let [bucket-lines (load-bucket-from-storage)
+        items (grab-3 bucket-lines)
         idx->item {1 (first items)
                    2 (second items)
                    3 (nth items 2)}]
