@@ -45,7 +45,7 @@
     (let [to-delete (read-line)]
       (when-not (str/blank? to-delete)
         (let [to-delete-numbers  (read-string (str "[" to-delete "]"))
-              to-delete-set (set (map idx->item to-delete-numbers))
+              to-delete-set (set (keep idx->item to-delete-numbers))
               temp-filename (str "/tmp/" (gensym "bitchuckit-"))]
           (filter-line-seq (complement to-delete-set) bucket-filename temp-filename)
           (spit bucket-filename (slurp temp-filename))
